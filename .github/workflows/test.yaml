@@ -10,5 +10,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: find cause
-        run: echo $GITHUB_EVENT_NAME
+      - name: Run on manual trigger
+        run: echo "manually triggered"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+      - name: Run on push
+        run: echo "push triggered"
+        if: ${{ github.event_name == 'push' }}
+      - name: Run on schedule
+        run: echo "push triggered"
+        if: ${{ github.event_name == 'schedule' }}
