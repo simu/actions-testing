@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   test:
@@ -19,3 +22,6 @@ jobs:
       - name: Run on schedule
         run: echo "push triggered"
         if: ${{ github.event_name == 'schedule' }}
+      - name: Run on PR
+        run: echo "PR ${{ github.event.number }}"
+        if: ${{ github.event_name == 'pull_request' }}

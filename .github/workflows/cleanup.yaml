@@ -1,0 +1,12 @@
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  cleanup_docker_image:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cleaning up tag test-pr${{ github.event.number }}"
