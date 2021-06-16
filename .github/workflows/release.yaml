@@ -1,0 +1,24 @@
+name: Test release action
+on:
+  push:
+    tags:
+    - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: docker.io/${{ github.repository }}
+    steps:
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        # To get "x commits to master since this release"
+        commitish: master
+        body: "Test release"
+        prerelease: "${{ contains(github.ref, '-rc') }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
