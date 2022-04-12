@@ -23,6 +23,8 @@ jobs:
           # combining possible changelogs of all previous PreReleases in between.
           # PreReleases show a partial changelog since last PreRelease.
           ignorePreReleases: "${{ !contains(github.ref, '-rc') }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Read release message from tag commit
         id: tag_message
         if: startsWith(github.ref, 'refs/tags/v')
