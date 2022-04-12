@@ -32,7 +32,8 @@ jobs:
           git --version
           echo ${GITHUB_REF##refs/tags/}
           git tag -n ${GITHUB_REF##refs/tags/}
-          git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/}
+          git show ${GITHUB_REF}
+          git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/} 
           echo "::set-output name=message::$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/})"
         env:
           GITHUB_REF: ${{ github.ref }}
