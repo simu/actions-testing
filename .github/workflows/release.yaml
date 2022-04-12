@@ -29,8 +29,7 @@ jobs:
         id: tag_message
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          git --version
-          echo ${GITHUB_REF##refs/tags/}
+          git fetch +refs/tags/*:refs/tags/*
           git tag -n ${GITHUB_REF##refs/tags/}
           git show ${GITHUB_REF}
           git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/} 
@@ -41,7 +40,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1
         with:
-          body: "## Summary\n\n${{steps.tag_message.outputs.message}}\n## Changes\n\n${{steps.build_changelog.outputs.changelog}}"
+          body: "## Summary\n\n${{steps.tag_message.outputs.message}}\n\n## Changes\n\n${{steps.build_changelog.outputs.changelog}}"
           prerelease: "${{ contains(github.ref, '-rc') }}"
           # To get "x commits to master since this release"
           commit: master
