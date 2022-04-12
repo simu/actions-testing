@@ -30,11 +30,11 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           git fetch origin +refs/tags/*:refs/tags/*
-          TAG_MSG=$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/})
-          # Escape newlines in tag message
-          TAG_MSG="${TAG_MSG//'%'/'%25'}"
-          TAG_MSG="${TAG_MSG//$'\n'/'%0A'}"
-          TAG_MSG="${TAG_MSG//$'\r'/'%0D'}"
+          # Extract tag message, replacing newlines with spaces
+          TAG_MSG=$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/} | paste -sd ' ')
+          # Replace double spaces with double escaped newline for actions
+          # output
+          TAG_MSG=$(echo $TAG_MSG | sed 's/  /%0A%0A/g')
           echo "::set-output name=message::${TAG_MSG}"
         env:
           GITHUB_REF: ${{ github.ref }}
