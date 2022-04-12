@@ -29,7 +29,6 @@ jobs:
         id: tag_message
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          git fetch --tags
           git --version
           echo ${GITHUB_REF##refs/tags/}
           git tag -n ${GITHUB_REF##refs/tags/}
