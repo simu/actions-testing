@@ -24,7 +24,8 @@ jobs:
         id: tag_message
         if: startsWith(github.ref, 'refs/tags/v')
         run:
-          - echo "::set-output name=message::$(git tag -n --format='%(contents:body)' ${{ github.ref }} | head -n-1)"
+          - git tag -n --format='%(contents:body)' ${{ github.ref }} | head -n-1 > tag_message.txt
+          - echo "::set-output name=message::$(cat tag_message.txt)"
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1
