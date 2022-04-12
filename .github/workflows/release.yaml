@@ -30,10 +30,12 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           git fetch origin +refs/tags/*:refs/tags/*
-          git tag -n ${GITHUB_REF##refs/tags/}
-          git show ${GITHUB_REF}
-          git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/} 
-          echo "::set-output name=message::$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/})"
+          TAG_MSG=$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/})
+          # Escape newlines in tag message
+          TAG_MSG="${TAG_MSG//'%'/'%25'}"
+          TAG_MSG="${TAG_MSG//$'\n'/'%0A'}"
+          TAG_MSG="${TAG_MSG//$'\r'/'%0D'}"
+          echo "::set-output name=message::${TAG_MSG}"
         env:
           GITHUB_REF: ${{ github.ref }}
       - name: Create Release
