@@ -25,4 +25,5 @@ jobs:
           esac
           workflow="${GITHUB_WORKFLOW_REF%%@*}"
           workflow="${workflow#${GITHUB_REPOSITORY}/.github/workflows/}"
+          echo ${GITHUB_WORKFLOW_REF}
           gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/enable"
