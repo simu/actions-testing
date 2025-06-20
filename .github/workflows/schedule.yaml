@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Enable workflow through API
         env:
-          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           case "${GITHUB_WORKFLOW_REF:?}" in
             "${GITHUB_REPOSITORY:?}"/.github/workflows/*.y*ml@*) ;;
