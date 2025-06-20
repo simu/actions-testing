@@ -2,6 +2,9 @@ name: Build images for Docker Hub
 on:
   schedule:
     - cron: '13 * * * *' # every hour at :13
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
