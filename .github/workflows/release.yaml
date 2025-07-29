@@ -34,9 +34,11 @@ jobs:
           TAG_MSG=$(git tag -n --format='%(contents:body)' ${GITHUB_REF##refs/tags/} | tr -d '\r')
           # Join multiple lines belonging to the same paragraph for GitHub
           # markdown.
-          # Paragraph breaks should be \n\n. We replace single line breaks
-          # with a space with sed.
-          TAG_MSG=$(echo "$TAG_MSG" | sed -z 's/\([^\n]\)\n\([^\n]\)/\1 \2/g')
+          # Paragraph breaks should be '\n\n'. List items should be '\n*'. We
+          # replace single line breaks which don't preceed a * with a space
+          # with sed. Note `sed -z` operates on the whole input instead of
+          # line-wise.
+          TAG_MSG=$(echo "$TAG_MSG" | sed -z 's/\([^\n]\)\n\([^\n\*]\)/\1 \2/g')
           # Set action output `messsage` as JSON-encoded string to preserve
           # newlines. We decode with `fromJSON()` below.
           TAG_MSG=$(jq -n --arg msg "${TAG_MSG}" '$msg')
