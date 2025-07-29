@@ -36,8 +36,9 @@ jobs:
           # markdown.
           # Paragraph breaks should be \n\n. We replace single line breaks
           # with a space with sed.
-          #TAG_MSG=$(echo ${TAG_MSG} |sed 's/([^\\n])\\n([^\\n]| )/\1 \2/g')
-          # Set action output `messsage`
+          TAG_MSG=$(echo "$TAG_MSG" | sed -z 's/\([^\n]\)\n\([^\n]\)/\1 \2/g')
+          # Set action output `messsage` as JSON-encoded string to preserve
+          # newlines. We decode with `fromJSON()` below.
           TAG_MSG=$(jq -n --arg msg "${TAG_MSG}" '$msg')
           echo "message=${TAG_MSG}" >> $GITHUB_OUTPUT
         env:
